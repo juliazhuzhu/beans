@@ -2,16 +2,27 @@ package cmd
 
 import(
 	"fmt"
-	//"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+	"flag"
 	"os"
 	cmd "xiaoye.com/dory/beans/libbeans/cmd"
 )
 
+var Name = "beans"
 var RootCmd *cmd.BeansRootCmd
 
 func init() {
+	var runFlags = pflag.NewFlagSet(Name, pflag.ExitOnError)
+	f := flag.CommandLine.Lookup("once")
+	if f != nil {
+		runFlags.AddGoFlag(f)
+	}
+	f = flag.CommandLine.Lookup("modules")
+	if f != nil {
+		runFlags.AddGoFlag(f)
+	}
 
-	RootCmd = cmd.GenRootCmd()
+	RootCmd = cmd.GenRootCmd(Name, runFlags)
 	RootCmd.AddCommand(genVersionCmd())
 }
   

@@ -2,6 +2,7 @@ package cmd
 
 import(
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 type BeansRootCmd struct {
@@ -10,14 +11,15 @@ type BeansRootCmd struct {
 	TestCmd			*cobra.Command		
 }
 
-func GenRootCmd() *BeansRootCmd{
+func GenRootCmd(name string, runFlags *pflag.FlagSet) *BeansRootCmd{
 
 	rootCmd := &BeansRootCmd{}
-	rootCmd.Use = "beans"
-	rootCmd.RunCmd = genRunCmd("beans")
+	rootCmd.Use = name
+	rootCmd.RunCmd = genRunCmd(name,runFlags)
 	rootCmd.TestCmd = genTestCmd()
 	rootCmd.Run = rootCmd.RunCmd.Run
 
+	rootCmd.Flags().AddFlagSet(rootCmd.RunCmd.Flags())
 	rootCmd.AddCommand(rootCmd.RunCmd)
 	rootCmd.AddCommand(rootCmd.TestCmd)
 	return rootCmd
