@@ -6,6 +6,7 @@ import(
 	"flag"
 	"os"
 	cmd "xiaoye.com/dory/beans/libbeans/cmd"
+	"xiaoye.com/dory/beans/filebeans/beaner"
 )
 
 var Name = "beans"
@@ -22,7 +23,7 @@ func init() {
 		runFlags.AddGoFlag(f)
 	}
 
-	RootCmd = cmd.GenRootCmd(Name, runFlags)
+	RootCmd = cmd.GenRootCmd(Name, beaner.New,runFlags)
 	RootCmd.AddCommand(genVersionCmd())
 }
   
